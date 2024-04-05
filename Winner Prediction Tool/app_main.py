@@ -849,8 +849,9 @@ def print_values2():
         inputs.append(entry.get())
 
     for index, name in map_names.items():  # for name, age in dictionary.iteritems():  (for Python 2.x)
-        if index == inputs[2]:
-            inputs[2] == index
+        if name == inputs[2]:
+            print("Map Name:", name, index)
+            inputs[2] = index
             break
 
     for name, entry in entries2.items():
