@@ -1,12 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import END
-# import ai model
 from ai_model import predict_simple, predict_gameState
-
 import os
 from tkinter import font as tkFont
-
 from PIL import ImageTk, Image
 from tkinter import filedialog
 
@@ -14,17 +11,6 @@ from tkinter import filedialog
 root = tk.Tk()
 root.title("StarCraft Winner Prediction")
 root.geometry("1000x517+0+0")
-
-#frame0 = ttk.Frame(root)
-#frame0.pack(fill='both', expand=True)
-
-'''
-img = Image.open("C:/Users/abhin/Documents/HW University/Dissertation/UI App/starcraft-wallpaper.jpg")
-img = ImageTk.PhotoImage(img)
-panel = tk.Label(root, image=img)
-panel.image = img
-panel.pack()
-'''
 
 # Create a canvas to hold the background image
 canvas = tk.Canvas(root, width=1000, height=517)
@@ -53,11 +39,11 @@ heading_label.place(width=500, height=50, x=200, y=20)
 
 # Variables
 model_var = tk.StringVar(value="Select")
-player1_race_var = tk.StringVar(value="Protoss")
-player2_race_var = tk.StringVar(value="Protoss")
+player1_race_var = tk.StringVar(value="Player 1 Race")
+player2_race_var = tk.StringVar(value="Player 2 Race")
 
 # Race Selector Label
-label_race_selector = ttk.Label(root, text="Race Selector", font=("Arial", 10))
+label_race_selector = ttk.Label(root, text="Race Selector", font=("Arial", 10,"bold"), foreground="white", background="black")
 label_race_selector.place(width=105, height=25, x=38, y=80)
 
 # Player 1 Race Combobox
@@ -69,15 +55,15 @@ combobox_player2_race = ttk.Combobox(root, textvariable=player2_race_var, values
 combobox_player2_race.place(width=118, height=25, x=286, y=80)
 
 # Model Selector
-label_model_selector = ttk.Label(root, text="Model Selector", font=("Arial", 10))
+label_model_selector = ttk.Label(root,text="Model Selector", font=("Arial", 10,"bold"), foreground="white", background="black")
 label_model_selector.place(width=121, height=25, x=442, y=80)
 
 # Model Selection Combobox
-combobox_model = ttk.Combobox(root, values=["Random Forest", "K-NN", "SVM", "Logistic Regression"])
+combobox_model = ttk.Combobox(root, textvariable=model_var, values=["Random Forest", "K-Nearest Neighbors", "Support Vector Classification", "Logistic Regression", "Decision Trees"])
 combobox_model.place(width=118, height=25, x=572, y=80)
 
 # Input Features Selector
-label_input_features = ttk.Label(root, text="Input Features", font=("Arial", 10))
+label_input_features = ttk.Label(root, text="Input Features", font=("Arial", 10,"bold"), foreground="white", background="black")
 label_input_features.place(width=121, height=25, x=725, y=80)
 
 # Input Features Combobox
@@ -85,6 +71,12 @@ combobox_input_features = ttk.Combobox(root, values=["Simple", "Game State"])
 combobox_input_features.place(width=118, height=25, x=852, y=80)
 combobox_input_features.bind('<<ComboboxSelected>>', lambda event: show_frame(combobox_input_features.get()))
 
+s = ttk.Style()
+
+root.wm_attributes('-transparentcolor', '#ab23ff')
+# Create style used by default for all Frames
+s.configure('TFrame', background='black')
+s.configure('TLabel', background='black', foreground="white", font=("Arial",10,"bold") )
 
 # Creating two frames as an example
 frame1 = ttk.Frame(frame0, width=1000, height=50)
@@ -120,11 +112,11 @@ entries = {
 }
 
 # Label for Player 1 and Player 2 above their race Comboboxes
-label_player1 = ttk.Label(frame1, text="Player 1", font=("Arial", 10))
+label_player1 = ttk.Label(frame1, text="Player 1")
 # label_player1.place(width=91, height=28, x=150, y=50)
 label_player1.grid(row=0, column=1, padx=5, pady=5)
 
-label_player2 = ttk.Label(frame1, text="Player 2", font=("Arial", 10))
+label_player2 = ttk.Label(frame1, text="Player 2")
 # label_player2.place(width=91, height=28, x=286, y=50)
 label_player2.grid(row=0, column=2, padx=5, pady=5)
 
@@ -136,7 +128,7 @@ labels_text = [
 # Calculate placement for labels
 for i, text in enumerate(labels_text):
     row = i + 1
-    label = ttk.Label(frame1, text=text, font=("Arial", 10))
+    label = ttk.Label(frame1, text=text)
     # label.place(x=30, y=100 + 30*row, height=25)
     label.grid(row=row, column=0, padx=5, pady=5)
 
@@ -167,9 +159,9 @@ def print_values1():
     # with columns ["Player1_Race","Player2_Race","Player1_AliveUnits","Player2_AliveUnits","Player1_SupplyUsed","Player2_SupplyUsed","Player1_Gas","Player1_Gas", "Player1_Minerals", "Player2_Minerals"]
     # return the winner percentage for player 1 and player 2
 
-    result = predict_simple(inputs)
+    result = predict_simple(inputs,combobox_model.get())
     print("recieved results", result)
-    update_winner_percent(entries,result[0]*100, result[1]*100)
+    update_winner_percent(entries,result[0], result[1])
 
 def update_winner_percent(entry,a,b):
     entry["p1_winner_percent"].config(state=tk.NORMAL)
@@ -177,13 +169,13 @@ def update_winner_percent(entry,a,b):
     entry["p1_winner_percent"].delete(0, tk.END)
     entry["p1_winner_percent"].insert(0, a)
 
-    entry["p1_winner_percent"].config(state=tk.DISABLED)
 
     entry["p2_winner_percent"].config(state=tk.NORMAL)
 
     entry["p2_winner_percent"].delete(0, tk.END)
     entry["p2_winner_percent"].insert(0, b)
 
+    entry["p1_winner_percent"].config(state=tk.DISABLED)
     entry["p2_winner_percent"].config(state=tk.DISABLED)
 
 # Predict Winner Button
@@ -191,6 +183,19 @@ button_predict_winner = ttk.Button(frame1, text="Predict Winner", command=print_
 button_predict_winner.place(width=159, height=57, x=433, y=73)
 
 ##################################### FRAME 2 ############################################
+
+def search(event):
+    value = event.widget.get()
+    if value == "":
+        map_entries['MapName']['values'] = map_names
+    
+    else:
+        data = []
+        for item in map_names.values():
+            test_str = ''.join(letter for letter in str(item) if letter.isalnum())
+            if value.lower() in test_str.lower():
+                data.append(item)
+            map_entries['MapName']['values'] = data
 
 map_names = {0: '\x01(4)\x03NsP Clan \x07Lost Temple',
   1: '\x01Neo \x06Vertigo',
@@ -774,10 +779,12 @@ map_labels_text = [
     "Map Name", "Map Width", "Map Height"
 ]
 
+map_entries['MapName'].bind("<KeyRelease>", search)
+
 # Calculate placement for labels
 for i, text in enumerate(map_labels_text):
     col = i + 1
-    label = ttk.Label(frame2, text=text, font=("Arial", 10))
+    label = ttk.Label(frame2, text=text)
     # label.place(x=30, y=100 + 30*row, height=25)
     label.grid(row=0, column=col, padx=5, pady=5)
 
@@ -804,11 +811,11 @@ entries2 = {
 }
 
 # Label for Player 1 and Player 2 above their race Comboboxes
-label_player1 = ttk.Label(frame2, text="Player 1", font=("Arial", 10))
+label_player1 = ttk.Label(frame2, text="Player 1")
 # label_player1.place(width=91, height=28, x=150, y=50)
 label_player1.grid(row=2, column=1, padx=5, pady=5)
 
-label_player2 = ttk.Label(frame2, text="Player 2", font=("Arial", 10))
+label_player2 = ttk.Label(frame2, text="Player 2")
 # label_player2.place(width=91, height=28, x=286, y=50)
 label_player2.grid(row=2, column=2, padx=5, pady=5)
 
@@ -820,7 +827,7 @@ labels_text = [
 # Calculate placement for labels
 for i, text in enumerate(labels_text):
     row = i + 3
-    label = ttk.Label(frame2, text=text, font=("Arial", 10))
+    label = ttk.Label(frame2, text=text)
     # label.place(x=30, y=100 + 30*row, height=25)
     label.grid(row=row, column=0, padx=5, pady=5)
 
@@ -861,7 +868,7 @@ def print_values2():
     # call predict winner with data as input as pandas input
     # with columns ["Player1_Race","Player2_Race","Player1_AliveUnits","Player2_AliveUnits","Player1_SupplyUsed","Player2_SupplyUsed","Player1_Gas","Player1_Gas", "Player1_Minerals", "Player2_Minerals"]
     # return the winner percentage for player 1 and player 2
-    result = predict_gameState(inputs)
+    result = predict_gameState(inputs,combobox_model.get())
     print("recieved results", result)
     update_winner_percent(entries2,result[0]*100, result[1]*100)
 
