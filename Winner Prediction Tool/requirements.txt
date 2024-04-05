@@ -1,0 +1,6 @@
+
+tkinter
+pandas
+scikit-learn
+Pillow
+joblib
