@@ -1,6 +1,4 @@
-
-tkinter
-pandas
-scikit-learn
-Pillow
-joblib
+pandas==2.1.1
+scikit-learn==1.3.0
+Pillow==10.0.1
+joblib==1.2.0
