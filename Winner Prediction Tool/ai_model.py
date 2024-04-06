@@ -60,7 +60,7 @@ def predict_gameState(data,model):
     if model == "Random Forest":
         model = estimator2
         result = model.predict_proba(data)
-    elif model == "SVM":
+    elif model == "Support Vector Classification":
         model = estimator4
         result = model._predict_proba_lr(data)
     elif model == "Logistic Regression":

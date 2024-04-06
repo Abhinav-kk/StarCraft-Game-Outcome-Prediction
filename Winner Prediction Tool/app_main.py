@@ -17,7 +17,7 @@ canvas = tk.Canvas(root, width=1000, height=517)
 canvas.pack(fill="both", expand=True)
 
 # Load the background image with PIL
-bg_image_path = "C:/Users/abhin/Documents/HW University/Dissertation/UI App/Tool_Final/starcraft-wallpaper.jpg"  # Change to the path of your image file
+bg_image_path = os.getcwd() + "/starcraft-wallpaper.jpg"  # Change to the path of your image file
 bg_image = Image.open(bg_image_path)
 bg_image = bg_image.resize((1000, 517))  # Resize the image to fit the window
 bg_photo = ImageTk.PhotoImage(bg_image)
@@ -39,6 +39,7 @@ heading_label.place(width=500, height=50, x=200, y=20)
 
 # Variables
 model_var = tk.StringVar(value="Select")
+feature_var = tk.StringVar(value="Select")
 player1_race_var = tk.StringVar(value="Player 1 Race")
 player2_race_var = tk.StringVar(value="Player 2 Race")
 
@@ -56,18 +57,18 @@ combobox_player2_race.place(width=118, height=25, x=286, y=80)
 
 # Model Selector
 label_model_selector = ttk.Label(root,text="Model Selector", font=("Arial", 10,"bold"), foreground="white", background="black")
-label_model_selector.place(width=121, height=25, x=442, y=80)
+label_model_selector.place(width=100, height=25, x=430, y=80)
 
 # Model Selection Combobox
 combobox_model = ttk.Combobox(root, textvariable=model_var, values=["Random Forest", "K-Nearest Neighbors", "Support Vector Classification", "Logistic Regression", "Decision Trees"])
-combobox_model.place(width=118, height=25, x=572, y=80)
+combobox_model.place(width=160, height=25, x=550, y=80)
 
 # Input Features Selector
 label_input_features = ttk.Label(root, text="Input Features", font=("Arial", 10,"bold"), foreground="white", background="black")
 label_input_features.place(width=121, height=25, x=725, y=80)
 
 # Input Features Combobox
-combobox_input_features = ttk.Combobox(root, values=["Simple", "Game State"])
+combobox_input_features = ttk.Combobox(root,textvariable=feature_var, values=["Simple", "Game State"])
 combobox_input_features.place(width=118, height=25, x=852, y=80)
 combobox_input_features.bind('<<ComboboxSelected>>', lambda event: show_frame(combobox_input_features.get()))
 
