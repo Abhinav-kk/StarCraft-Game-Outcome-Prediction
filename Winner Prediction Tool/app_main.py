@@ -188,7 +188,7 @@ button_predict_winner.place(width=159, height=57, x=433, y=73)
 def search(event):
     value = event.widget.get()
     if value == "":
-        map_entries['MapName']['values'] = map_names
+        map_entries['MapName']['values'] = list(map_names.values())
     
     else:
         data = []
