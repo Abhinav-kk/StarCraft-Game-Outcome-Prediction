@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import END
-from ai_model import predict_simple, predict_gameState
+from ai_model import predict_simple, predict_gameState, predict_CSV
 import os
 from tkinter import font as tkFont
 from PIL import ImageTk, Image
@@ -60,7 +60,7 @@ label_model_selector = ttk.Label(root,text="Model Selector", font=("Arial", 10,"
 label_model_selector.place(width=100, height=25, x=430, y=80)
 
 # Model Selection Combobox
-combobox_model = ttk.Combobox(root, textvariable=model_var, values=["Random Forest", "K-Nearest Neighbors", "Support Vector Classification", "Logistic Regression", "Decision Trees"])
+combobox_model = ttk.Combobox(root, textvariable=model_var, values=["Random Forest", "K-Nearest Neighbors", "Support Vector Classification", "Logistic Regression", "Decision Trees","Neural Network"])
 combobox_model.place(width=160, height=25, x=550, y=80)
 
 # Input Features Selector
@@ -68,7 +68,7 @@ label_input_features = ttk.Label(root, text="Input Features", font=("Arial", 10,
 label_input_features.place(width=121, height=25, x=725, y=80)
 
 # Input Features Combobox
-combobox_input_features = ttk.Combobox(root,textvariable=feature_var, values=["Simple", "Game State"])
+combobox_input_features = ttk.Combobox(root,textvariable=feature_var, values=["Simple", "Game State", "CSV"])
 combobox_input_features.place(width=118, height=25, x=852, y=80)
 combobox_input_features.bind('<<ComboboxSelected>>', lambda event: show_frame(combobox_input_features.get()))
 
@@ -82,9 +82,10 @@ s.configure('TLabel', background='black', foreground="white", font=("Arial",10,"
 # Creating two frames as an example
 frame1 = ttk.Frame(frame0, width=1000, height=50)
 frame2 = ttk.Frame(frame0, width=1000, height=50)
+frame3 = ttk.Frame(frame0, width=1000, height=150)
 
 # Storing the frames in a dict makes it easier to switch between them
-frames = {'Simple': frame1, 'Game State': frame2}
+frames = {'Simple': frame1, 'Game State': frame2, "CSV": frame3}
 
 def show_frame(name):
     frame0.config(width=800, height=300)
@@ -876,5 +877,66 @@ def print_values2():
 # Predict Winner Button
 button_predict_winner = ttk.Button(frame2, text="Predict Winner", command=print_values2)
 button_predict_winner.place(width=159, height=57, x=433, y=73)
+
+##################################### FRAME 3 ############################################
+
+# Create Entries
+entries3 = {
+    'full_data': tk.Text(frame3, height=5, width=80),  # Adjust width as needed
+    'p1_winner_percent': ttk.Entry(frame3),
+    'p2_winner_percent': ttk.Entry(frame3),
+}
+
+# Instruction Label for the text field
+instruction_label = ttk.Label(frame3, text="Paste One Row From CSV File")
+instruction_label.grid(row=1, column=0, columnspan=3, padx=5, pady=5,sticky="w")  # Span across all columns
+
+#sep_label = ttk.Label(frame3, text="CSV Seperator:",width=40)
+#sep_label.grid(row=0, column=0, columnspan=3) 
+
+#sep_var = tk.StringVar(value="Select Seperator")
+#combobox_sep = ttk.Combobox(frame3, textvariable=sep_var, values=["	", ","])
+#combobox_sep.grid(row=0, column=1, columnspan=3, padx=5, pady=5) 
+
+# Positioning the Text widget for full_data
+entries3['full_data'].grid(row=2, column=0, columnspan=3, padx=5, pady=5, sticky="ew")
+
+label_player0 = ttk.Label(frame3, text="Winner %")
+label_player0.grid(row=5, column=0, padx=5, pady=5)
+
+# Labels for Player 1 and Player 2
+label_player1 = ttk.Label(frame3, text="Player 1")
+label_player1.grid(row=4, column=1, padx=5, pady=5)
+
+label_player2 = ttk.Label(frame3, text="Player 2")
+label_player2.grid(row=4, column=2, padx=5, pady=5)
+
+# Positioning the winner percentage entries under the labels
+entries3['p1_winner_percent'].grid(row=5, column=1, padx=5, pady=5)
+entries3['p2_winner_percent'].grid(row=5, column=2, padx=5, pady=5)
+
+# Set initial state of winner percentage entries to disabled
+entries3["p1_winner_percent"].config(state="disabled")
+entries3["p2_winner_percent"].config(state="disabled")
+
+def print_values3():
+    # Print ComboBox values
+    print("Player 1 Race:", combobox_player1_race.get())
+    print("Player 2 Race:", combobox_player2_race.get())
+    print("Selected Model:", combobox_model.get())
+    print("Input Features:", combobox_input_features.get())
+    combobox_model.set("Random Forest")
+    inputs = entries3['full_data'].get(1.0, "end-1c") 
+    temporary = inputs.split(",")
+    combobox_player1_race.set(temporary[8])
+    combobox_player2_race.set(temporary[11])
+    result = predict_CSV(inputs)
+    print("recieved results", result)
+    update_winner_percent(entries3,result[0]*100, result[1]*100)
+
+# Predict Winner Button
+button_predict_winner = ttk.Button(frame3, text="Predict Winner", command=print_values3,width=40)
+button_predict_winner.grid( row=6, column=1)
+
 
 root.mainloop()
