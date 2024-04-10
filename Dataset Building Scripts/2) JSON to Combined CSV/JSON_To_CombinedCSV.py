@@ -46,7 +46,8 @@ def flatten_player_descs(player_descs, sep="."):
 def extract_leave_game_cmds(computed_info, sep="."):
     leave_game_cmds_info = computed_info.get("LeaveGameCmds", [])
     if leave_game_cmds_info is not None:
-        leave_game_cmd_frame = [cmd.get("Frame", None) for cmd in leave_game_cmds_info]
+        leave_game_cmd_frame = [cmd.get("Frame", None)
+                                for cmd in leave_game_cmds_info]
         leave_game_player_id = [
             cmd.get("PlayerID", None) for cmd in leave_game_cmds_info
         ]
@@ -91,7 +92,8 @@ for json_file in json_files:
     flat_player_descs = flatten_player_descs(player_descs_info)
 
     # Extract leaveGameCmds information
-    leave_game_cmd_frame, leave_game_player_id = extract_leave_game_cmds(computed_info)
+    leave_game_cmd_frame, leave_game_player_id = extract_leave_game_cmds(
+        computed_info)
 
     # Combine flattened header, players, computed, and player_descs
     combined_data = {
