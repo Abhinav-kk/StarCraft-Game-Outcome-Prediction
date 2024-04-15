@@ -72,6 +72,10 @@ Use the following command to run the winner prediction tool.
 python app_main.py
 ```
 
+## VM for Replay Parser using BwRepDump
+### [Replay Parser VM Single Download (25.1 GB)](https://heriotwatt-my.sharepoint.com/:u:/g/personal/akk2002_hw_ac_uk/EablqPLOzjdPiUqdYdS1yJgBJWRs4qwmR4G0wTLYst_YKA?e=pO7bDH) <br>
+### [Replay Parser VM Split into 11 parts of 2 GB each Zip Files](https://heriotwatt-my.sharepoint.com/:f:/g/personal/akk2002_hw_ac_uk/Ev2Vv_T8rY5MhwbPtXVCNdQBz0njQ59ha6j7l4GBcYbFgg?e=JtvBH5)
+
 ## License
 
 This project is licensed with GNU General Public License V2.
