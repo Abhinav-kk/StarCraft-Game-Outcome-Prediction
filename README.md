@@ -56,6 +56,9 @@ The application layer, containing the main script for executing the prediction t
 - `requirements.txt`: Lists dependencies for the project to ensure replicability.
 - `starcraft-wallpaper.jpg`: Background image for winner prediction tool.
 
+### Project Environment
+- `Environment.yaml`: Conda environment file for replicating the project environment.
+
 #### Installation
 
 Instructions on setting up the project environment.
@@ -77,6 +80,7 @@ python app_main.py
   <img src="https://img.youtube.com/vi/GOvOatxa2KY/0.jpg" alt="Demo Video"/>
   </a>
 </p>
+
 
 ## VM for Replay Parser using BwRepDump
 ### [Replay Parser VM Single Download (25.1 GB)](https://heriotwatt-my.sharepoint.com/:u:/g/personal/akk2002_hw_ac_uk/EablqPLOzjdPiUqdYdS1yJgBJWRs4qwmR4G0wTLYst_YKA?e=pO7bDH) <br>
