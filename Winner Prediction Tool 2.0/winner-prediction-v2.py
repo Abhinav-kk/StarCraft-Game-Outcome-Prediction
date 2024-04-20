@@ -11,12 +11,15 @@ import joblib
 from tkinter import font as tkFont
 import os
 import sys
+import subprocess
 from PIL import ImageTk, Image
 
 
 def restart_app():
-    python = sys.executable
-    os.execl(python, python, * sys.argv)
+    # Use a list for the command and arguments, avoiding the need to manually handle escaping
+    cmd = [sys.executable] + sys.argv
+    subprocess.Popen(cmd)
+    root.destroy()
 
 # App will contain a slider, a file browser and two entries with label which shows the win percentage of both players
 
@@ -126,11 +129,12 @@ def read_update_Live():
     X["Enemy Player"] = 1
     values = model.predict_proba(X)
     print(values)
-
+    time_progressed = nearest_rows['Time Elapsed (minutes:seconds)'].values[0]
     # get frame value and store in i
     i = nearest_rows['Frame'].values[0]
 
-    live_frames_label.config(text="Frame: " + str(i))
+    live_frames_label.config(text="Frame: " + str(i) +
+                             "\nTime Elapsed : " + str(time_progressed) + " Minutes")
 
     player1_win_percentage.config(state=tk.NORMAL)
     player2_win_percentage.config(state=tk.NORMAL)
