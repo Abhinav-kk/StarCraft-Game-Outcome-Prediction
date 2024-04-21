@@ -96,3 +96,10 @@ python app_main.py
 ## License
 
 This project is licensed with GNU General Public License V2.
+
+## Credits
+- My Supervisor [Dr. Hani Ragab Hassen](https://scholar.google.com/citations?user=QdbCDo8AAAAJ) (Associate Professor, Heriot-Watt University Dubai)
+- BwRepDump Replay Parser - https://github.com/syhw/bwrepdump & https://bitbucket.org/auriarte/bwrepdump/src/master/
+- Screp Replay Parser - https://github.com/icza/screp
+- BWAPI: The Brood War API - https://github.com/bwapi/bwapi
+- StarCraft AI - https://www.starcraftai.com/
