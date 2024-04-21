@@ -27,9 +27,11 @@ def restart_app():
 
 
 model = joblib.load('rf_model.pkl')
-
+model2 = joblib.load('lr_model.pkl')
 
 # Function to browse the file
+
+
 def browse_file():
     # Opening the file browser
     file_path = askopenfile(mode='r', filetypes=[('CSV Files', '*.csv')])
@@ -63,7 +65,14 @@ def read_update_slider():
     X["ReplayID"] = 1
     X["Player"] = 0
     X["Enemy Player"] = 1
-    values = model.predict_proba(X)
+    if model_var.get() == "Random Forest":
+        values = model.predict_proba(X)
+    elif model_var.get() == "Logistic Regression":
+        values = model2.predict_proba(X)
+    else:
+        values = [[0, 0]]
+    # round values to 2 places
+    values = [[round(i, 2) for i in values[0]]]
     print(values)
 
     player1_win_percentage.config(state=tk.NORMAL)
@@ -101,7 +110,14 @@ def read_update_auto():
     X["ReplayID"] = 1
     X["Player"] = 0
     X["Enemy Player"] = 1
-    values = model.predict_proba(X)
+    if model_var.get() == "Random Forest":
+        values = model.predict_proba(X)
+    elif model_var.get() == "Logistic Regression":
+        values = model2.predict_proba(X)
+    else:
+        values = [[0, 0]]
+    # round values to 2 places
+    values = [[round(i, 2) for i in values[0]]]
     print(values)
 
     player1_win_percentage.config(state=tk.NORMAL)
@@ -127,7 +143,14 @@ def read_update_Live():
     X["ReplayID"] = 1
     X["Player"] = 0
     X["Enemy Player"] = 1
-    values = model.predict_proba(X)
+    if model_var.get() == "Random Forest":
+        values = model.predict_proba(X)
+    elif model_var.get() == "Logistic Regression":
+        values = model2.predict_proba(X)
+    else:
+        values = [[0, 0]]
+    # round values to 2 places
+    values = [[round(i, 2) for i in values[0]]]
     print(values)
     time_progressed = nearest_rows['Time Elapsed (minutes:seconds)'].values[0]
     # get frame value and store in i
@@ -194,7 +217,7 @@ root.geometry("705x305")
 # Create a canvas to hold the background image
 canvas = tk.Canvas(root, width=700, height=300)
 # canvas on full grid
-canvas.grid(row=0, column=0, rowspan=7, columnspan=3)
+canvas.grid(row=0, column=0, rowspan=8, columnspan=3)
 
 # Load the background image with PIL
 # Change to the path of your image file
@@ -279,29 +302,42 @@ calculate_button.grid(pady=5, row=3, column=1)
 live_frames_label = ttk.Label(root, text="Frames: 0")
 live_frames_label.grid(pady=5, row=3, column=2)
 
+model_var = tk.StringVar(value="Select ML Model")
+
+# Model Selector
+label_model_selector = ttk.Label(root, text="Prediction Model Selector", font=(
+    "Arial", 10, "bold"), foreground="white", background="black")
+label_model_selector.grid(pady=5, row=5, column=0)
+
+# Model Selection Combobox
+combobox_model = ttk.Combobox(root, textvariable=model_var, values=[
+                              "Random Forest", "Logistic Regression"])
+combobox_model.grid(pady=5, row=5, column=1)
+
+
 winner_label = ttk.Label(root, text="Winner % of Player")
-winner_label.grid(pady=5, row=6, column=0)
+winner_label.grid(pady=5, row=7, column=0)
 
 # Creating a label for the win percentage of player 1
 player1_win_percentage_label = ttk.Label(root, text="Player 1 Win Percentage")
 player1_win_percentage_label.grid(
-    pady=5, row=5, column=1)  # Place in row 0, column 0
+    pady=5, row=6, column=1)  # Place in row 0, column 0
 
 # Creating an entry widget to display the win percentage of player 1
 player1_win_percentage = tk.Entry(root)
 # Place in row 0, column 1
-player1_win_percentage.grid(pady=7, row=6, column=1)
+player1_win_percentage.grid(pady=7, row=7, column=1)
 player1_win_percentage.config(state="disabled")
 
 # Creating a label for the win percentage of player 2
 player2_win_percentage_label = ttk.Label(root, text="Player 2 Win Percentage")
 player2_win_percentage_label.grid(
-    pady=5, row=5, column=2)  # Place in row 0, column 2
+    pady=5, row=6, column=2)  # Place in row 0, column 2
 
 # Creating an entry widget to display the win percentage of player 2
 player2_win_percentage = tk.Entry(root)
 # Place in row 0, column 3
-player2_win_percentage.grid(pady=5, row=6, column=2)
+player2_win_percentage.grid(pady=5, row=7, column=2)
 player2_win_percentage.config(state="disabled")
 
 # Creating a button to browse the file
