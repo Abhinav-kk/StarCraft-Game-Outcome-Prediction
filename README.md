@@ -81,6 +81,13 @@ python app_main.py
   </a>
 </p>
 
+## Demo Video of Winner Prediction Tool v2
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=oFwgs4FhWZI">
+  <img src="https://img.youtube.com/vi/oFwgs4FhWZI/0.jpg" alt="Demo Video"/>
+  </a>
+</p>
+
 
 ## VM for Replay Parser using BwRepDump
 ### [Replay Parser VM Single Download (25.1 GB)](https://heriotwatt-my.sharepoint.com/:u:/g/personal/akk2002_hw_ac_uk/EablqPLOzjdPiUqdYdS1yJgBJWRs4qwmR4G0wTLYst_YKA?e=pO7bDH) <br>
